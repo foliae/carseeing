@@ -37,6 +37,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,10 +81,15 @@ WSGI_APPLICATION = 'web_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'carseeing',
+        'USER': 'xcb_auth',
+        'PASSWORD': 'pLusK1mOMSOTSiYX',
+        'HOST': 'mysql.sqlpub.com',
+        'PORT': '3306',
     }
 }
 
@@ -110,9 +116,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+SIMPLEUI_LOGIN_PARTICLES = False
 
-TIME_ZONE = 'UTC'
+# 更改默认语言为中文
+LANGUAGE_CODE = 'zh-hans'
+# 去掉默认Logo或换成自己Logo链接
+SIMPLEUI_LOGO = 'http://www.carseeing.com/assets/img/logo.png'
+# 隐藏右侧SimpleUI广告链接和使用分析
+SIMPLEUI_HOME_INFO = False 
+SIMPLEUI_ANALYSIS = False 
+
+# 设置默认主题，指向主题css文件名。紫色风格
+SIMPLEUI_DEFAULT_THEME = 'e-red.css'
+
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -131,3 +148,16 @@ STATIC_URL = '/static/'
 # from this location, rather than relying on the app server to serve those files
 # from various locations in the app. Doing so results in better overall performance.
 STATIC_ROOT = BASE_DIR / 'static_collected'
+
+# 隐藏首页的快捷操作和最近动作
+SIMPLEUI_HOME_QUICK = False 
+SIMPLEUI_HOME_ACTION = False
+
+# 修改左侧菜单首页设置
+SIMPLEUI_HOME_PAGE = 'http://www.carseeing.com'  # 指向页面
+SIMPLEUI_HOME_TITLE = '行车宝' # 首页标题
+SIMPLEUI_HOME_ICON = 'xcb' # 首页图标
+
+# 设置右上角Home图标跳转链接，会以另外一个窗口打开
+SIMPLEUI_INDEX = 'http://www.carseeing.com'
+
