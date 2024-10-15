@@ -1,0 +1,52 @@
+{% extends 'admin/change_form.html' %}
+{% load i18n admin_urls static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .filter-form {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #f5f7fa;
+        border-radius: 4px;
+    }
+    .el-select {
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<el-form class="filter-form" method="get" @submit.native.prevent="onSubmit">
+    <el-form-item label="订单创建时间">
+        <el-select v-model="timeRange" placeholder="请选择时间范围">
+            <el-option label="所有时间" value="all"></el-option>
+            <el-option label="今天" value="today"></el-option>
+            <el-option label="最近一周" value="week"></el-option>
+            <el-option label="最近一个月" value="month"></el-option>
+        </el-select>
+    </el-form-item>
+    <el-form-item>
+        <el-button type="primary" native-type="submit">筛选订单</el-button>
+    </el-form-item>
+</el-form>
+
+{{ block.super }}
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script>
+    new Vue({
+        el: '.filter-form',
+        data: {
+            timeRange: '{{ request.GET.time_range|default:"all" }}'
+        },
+        methods: {
+            onSubmit() {
+                window.location.href = '?time_range=' + this.timeRange;
+            }
+        }
+    });
+</script>
+{% endblock %}

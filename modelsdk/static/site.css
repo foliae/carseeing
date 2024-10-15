@@ -39,3 +39,7 @@ input[name=message] {
     text-align: left;
     padding-right: 15px;
 }
+.logo-wrap img {
+    max-width: 250px !important;
+    margin-bottom: -10px !important;
+}

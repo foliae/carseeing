@@ -29,6 +29,7 @@ DEBUG = True
 # a specific host, you must also add 'localhost' and/or '127.0.0.1' for local
 # debugging (which are enabled by default when ALLOWED_HOSTS is empty.)
 ALLOWED_HOSTS = [
+    '*'
     #'localhost',
     #'127.0.0.1'
     #'vscode-django-tutorial.azurewebsites.net'  # Sample name only!
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello',
+    'modelsdk',
 ]
 
 MIDDLEWARE = [
@@ -87,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'carseeing',
         'USER': 'xcb_auth',
-        'PASSWORD': 'pLusK1mOMSOTSiYX',
-        'HOST': 'mysql.sqlpub.com',
+        'PASSWORD': 'xQkV7YfaB4W',
+        'HOST': '139.129.111.48',
         'PORT': '3306',
     }
 }
@@ -111,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -149,6 +149,12 @@ STATIC_URL = '/static/'
 # from various locations in the app. Doing so results in better overall performance.
 STATIC_ROOT = BASE_DIR / 'static_collected'
 
+
+STATICFILES_DIRS = [
+    #BASE_DIR / "static",  # 确保这里包含了您的静态文件目录
+    BASE_DIR / "modelsdk" / "static" , 
+]
+
 # 隐藏首页的快捷操作和最近动作
 SIMPLEUI_HOME_QUICK = False 
 SIMPLEUI_HOME_ACTION = False
@@ -160,4 +166,11 @@ SIMPLEUI_HOME_ICON = 'xcb' # 首页图标
 
 # 设置右上角Home图标跳转链接，会以另外一个窗口打开
 SIMPLEUI_INDEX = 'http://www.carseeing.com'
+
+
+SIMPLEUI_CONFIG = {
+    'system_keep': True,  # 保持系统设置
+    'custom_css': 'site.css',  # 添加自定义 CSS 文件的路径
+    'favicon': 'favicon.ico',
+}
 

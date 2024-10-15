@@ -1,0 +1,57 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>添加数据</h1>
+
+    {% if messages %}
+    <ul class="messagelist">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="module">
+        <h2>添加公司</h2>
+        <form method="post" class="simpleui-form">
+            {% csrf_token %}
+            {{ company_form.as_p }}
+            <input type="hidden" name="form_type" value="company">
+            <div class="submit-row">
+                <input type="submit" value="添加公司" class="default">
+            </div>
+        </form>
+    </div>
+
+    <div class="module">
+        <h2>添加订单</h2>
+        <form method="post" class="simpleui-form">
+            {% csrf_token %}
+            {{ order_form.as_p }}
+            <input type="hidden" name="form_type" value="order">
+            <div class="submit-row">
+                <input type="submit" value="添加订单" class="default">
+            </div>
+        </form>
+    </div>
+
+    <div class="module">
+        <h2>添加PC</h2>
+        <form method="post" class="simpleui-form">
+            {% csrf_token %}
+            {{ pc_form.as_p }}
+            <input type="hidden" name="form_type" value="pc">
+            <div class="submit-row">
+                <input type="submit" value="添加PC" class="default">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

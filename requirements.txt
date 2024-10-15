@@ -1,3 +1,4 @@
 Django>=3.1.0
 pytz==2020.5
 mysqlclient
+django-Simpleui

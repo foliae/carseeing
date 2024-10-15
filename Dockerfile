@@ -1,5 +1,5 @@
 # Pull a pre-built alpine docker image with nginx and python3 installed
-FROM tiangolo/uwsgi-nginx:python3.8-alpine-2020-12-19
+FROM tiangolo/uwsgi-nginx:python3.12
 
 # Set the port on which the app runs; make both values the same.
 #
@@ -22,6 +22,7 @@ ENV UWSGI_INI uwsgi.ini
 ENV STATIC_URL /app/static_collected
 
 # Copy the app files to a folder and run it from there
+RUN mkdir -p /app
 WORKDIR /app
 ADD . /app
 
@@ -31,7 +32,7 @@ ADD . /app
 # "attempt to write to a readonly database", respectively, whenever the app attempts to
 # write to the database.
 RUN chmod g+w /app
-RUN chmod g+w /app/db.sqlite3
+RUN if [ -f /app/db.sqlite3 ]; then chmod g+w /app/db.sqlite3; fi
 
 # Make sure dependencies are installed
 RUN python3 -m pip install -r requirements.txt
