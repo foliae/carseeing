@@ -1,4 +1,9 @@
-Django>=3.1.0
+asgiref==3.8.1
+Cython==3.0.11
+Django==5.1.2
+django-simpleui==2024.8.28
+mysqlclient==2.2.4
 pytz==2020.5
-mysqlclient
-django-Simpleui
+setuptools==75.1.0
+sqlparse==0.5.1
+uWSGI==2.0.26

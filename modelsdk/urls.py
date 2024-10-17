@@ -19,4 +19,5 @@ urlpatterns = [
     path("log/", views.log_message, name="log"),
     path('get_orders_for_company/', views.get_orders_for_company, name='get_orders_for_company'),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')), 
+    path('xcb/', views.xcb, name='xcb'),  # 添加新的 URL 路径
 ]

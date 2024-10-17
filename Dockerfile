@@ -36,3 +36,5 @@ RUN if [ -f /app/db.sqlite3 ]; then chmod g+w /app/db.sqlite3; fi
 
 # Make sure dependencies are installed
 RUN python3 -m pip install -r requirements.txt
+
+RUN cd modelsdk/cparser && python setup.py build_ext --inplace

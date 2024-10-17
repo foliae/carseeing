@@ -1,13 +1,10 @@
 from django.contrib import admin
-from django.urls import path
 from . import models
-from .models import Company
 from django.contrib.admin import SimpleListFilter
 from django.db.models import Q
 from django import forms
 from django.utils import timezone
 from datetime import timedelta
-from django.contrib.auth.models import User, Group
 
 """
 class CustomAdminSite(admin.AdminSite):
@@ -57,8 +54,8 @@ class TotalUsedFilter(SimpleListFilter):
 @admin.register(models.Company)
 class CompanyAdmin(admin.ModelAdmin):
     search_fields = ['company__icontains']  # 启用对 company 字段的搜索
-    list_display = ['company', 'totalused', 'created_at']  # 在列表中显示这些字段
-    list_filter = (TotalUsedFilter,)  # 使用自定义的筛选器
+    list_display = ['company', 'total_max', 'totalused', 'created_at']  # 在列表中显示这些字段
+    list_filter = ('created_at',TotalUsedFilter,)  # 使用自定义的筛选器
     list_per_page = 20  # 每页显示的记录数
 
 class MaxEmbedFilter(SimpleListFilter):
@@ -137,8 +134,8 @@ class PCAdminForm(forms.ModelForm):
 class PCAdmin(admin.ModelAdmin):
     form = PCAdminForm
     search_fields = ['pc_id', 'auth_code', 'order__order_num', 'order__company__company']
-    list_display = ['pc_id', 'auth_code', 'get_order_num', 'get_company', 'get_max_embed', 'get_already_used']
-    list_filter = ('order__company', MaxEmbedPCFilter, 'order__alreadyused')
+    list_display = ['pc_id', 'auth_code', 'get_order_num', 'get_company', 'get_max_embed', 'get_already_used', 'created_at']
+    list_filter = ('order__company', MaxEmbedPCFilter, 'order__alreadyused', 'created_at')
     list_per_page = 20
     #readonly_fields = ['company']
 
@@ -228,3 +225,32 @@ admin.site.site_header = ''
 admin.site.site_title = '企业后台'
 admin.site.index_title = '企业后台'
 #admin.site.register(models.NormalUser)
+
+@admin.register(models.Embed)
+class EmbedAdmin(admin.ModelAdmin):
+    search_fields = ['embed_id', 'pc__pc_id', 'order__order_num', 'company__company']  # 启用对这些字段的搜索
+    list_display = ['embed_id', 'get_pc_id', 'get_order_num', 'get_company', 'id_count', 'updated_at']  # 在列表中显示这些字段
+    list_filter = ('company', 'order', 'updated_at')  # 使用公司和订单进行筛选
+    list_per_page = 20  # 每页显示的记录数
+
+    def get_pc_id(self, obj):
+        return obj.pc.pc_id
+    get_pc_id.short_description = 'PC ID'
+    get_pc_id.admin_order_field = 'pc__pc_id'
+
+    def get_order_num(self, obj):
+        return obj.order.order_num
+    get_order_num.short_description = '订单号'
+    get_order_num.admin_order_field = 'order__order_num'
+
+    def get_company(self, obj):
+        return obj.company.company
+    get_company.short_description = '公司'
+    get_company.admin_order_field = 'company__company'
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        company_id = request.GET.get('company')
+        if company_id:
+            qs = qs.filter(company_id=company_id)
+        return qs

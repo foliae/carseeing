@@ -5,11 +5,13 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from .models import Order
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CompanyForm
-
+from .cparser import call_parser
 from modelsdk.forms import LogMessageForm
 from modelsdk.models import LogMessage
+import logging
 
 
 
@@ -89,3 +91,18 @@ def get_orders_for_company(request):
     company_id = request.GET.get('company_id')
     orders = Order.objects.filter(company_id=company_id).values('id', 'order_num')
     return JsonResponse({'orders': list(orders)})
+
+
+logger = logging.getLogger(__name__)
+#curl -X POST -m 5 -H "Content-Length: 96" --data-binary @test.bin http://127.0.0.1:8000/xcb/
+@csrf_exempt
+def xcb(request):
+    if request.method == 'POST':
+        # 调用 Cython 中的解析函数并获取返回值
+        if len(request.body) > 0:
+            result = call_parser.parse_data(request.body)
+            result['body_len'] = len(request.body)
+            return JsonResponse({'status': 'success', 'result': result}, status=200)
+        return JsonResponse({'status': 'error', 'message': 'body len = 0'}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
